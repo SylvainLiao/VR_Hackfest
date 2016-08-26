@@ -15,7 +15,7 @@ using SynchronizerData;
 /// may contribute to lower CPU loads.
 /// </remarks>
 public class BeatObserver : MonoBehaviour {
-    public delegate void OnBeatMaskChange(BeatType beatMask);
+    public delegate void OnBeatMaskChange(BeatType beatMask, float beatTime);
 	[Range(0, 500)]
 	public float beatWindow = 10f;	// in milliseconds
 	
@@ -59,7 +59,7 @@ public class BeatObserver : MonoBehaviour {
         if (onBeatMaskChange != null)
         {
 
-            onBeatMaskChange(beatMask);
+            onBeatMaskChange(beatMask, Time.time);
         }
         beatMask ^= beatType;
         
