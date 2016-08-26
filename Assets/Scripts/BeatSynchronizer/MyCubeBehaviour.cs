@@ -10,14 +10,13 @@ public class MyCubeBehaviour : MonoBehaviour {
         anim = GetComponent<Animator>();
         BeatManager bm = Object.FindObjectOfType<BeatManager>();
         //beatObserver = GetComponent<BeatObserver>();
-        beatObserver = bm.AddAndRegisterBeatObserver(BeatType.DownBeat, gameObject);
+        beatObserver = bm.AddAndRegisterBeatObserver(BeatValue.WholeBeat, gameObject);
         beatObserver.onBeatMaskChange += OnBeatMaskChange;
 
     }
 
     void OnBeatMaskChange(BeatType beatMask)
     {
-        Debug.Log("change " + beatObserver.beatMask);
         if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat)
         {
             anim.SetTrigger("DownBeatTrigger");
@@ -27,10 +26,23 @@ public class MyCubeBehaviour : MonoBehaviour {
             transform.Rotate(Vector3.forward, 45f);
         }
     }
+    /*
+    void Update()
+    {
+        if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat)
+        {
+            anim.SetTrigger("DownBeatTrigger");
+        }
+        if ((beatObserver.beatMask & BeatType.UpBeat) == BeatType.UpBeat)
+        {
+            transform.Rotate(Vector3.forward, 45f);
+        }
+    }
+    */
 
     void OnDestroy()
     {
         BeatManager bm = Object.FindObjectOfType<BeatManager>();
-        bm.RemoveBeatObserver(BeatType.DownBeat, beatObserver);
+        bm.RemoveBeatObserver(BeatValue.WholeBeat, beatObserver);
     }
 }
