@@ -142,5 +142,12 @@ class BeatManager : MonoBehaviour
     {
         beatSynchronizer.SetAudioClip(clip, bpm, startDelay);
     }
+
+    public void ClearBeatObservers()
+    {
+        downBeatWholeBeatCounter.ClearBeatObserver();
+        downBeatHalfBeatCounter.ClearBeatObserver();
+        downBeatQuarterBeatCounter.ClearBeatObserver();
+    }
 }
 

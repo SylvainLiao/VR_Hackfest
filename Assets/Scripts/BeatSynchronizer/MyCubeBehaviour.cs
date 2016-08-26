@@ -16,9 +16,9 @@ public class MyCubeBehaviour : MonoBehaviour {
 
     }
 
-    void OnBeatMaskChange(BeatType beatMask)
+    void OnBeatMaskChange(BeatType beatMask, float beatTime)
     {
-        Debug.Log(Time.time);
+        Debug.Log(beatTime);
         if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat)
         {
             anim.SetTrigger("DownBeatTrigger");
@@ -48,7 +48,7 @@ public class MyCubeBehaviour : MonoBehaviour {
 
     void OnDestroy()
     {
-        BeatManager bm = Object.FindObjectOfType<BeatManager>();
-        bm.RemoveBeatObserver(beatValue, beatObserver);
+        //BeatManager bm = Object.FindObjectOfType<BeatManager>();
+        //bm.RemoveBeatObserver(beatValue, beatObserver);
     }
 }

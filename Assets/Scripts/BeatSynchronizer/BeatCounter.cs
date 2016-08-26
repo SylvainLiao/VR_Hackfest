@@ -85,6 +85,11 @@ public class BeatCounter : MonoBehaviour {
         observers.Remove(beatObserver);
     }
 
+    public void ClearBeatObserver()
+    {
+        observers.Clear();
+    }
+
 	/// <summary>
 	/// This method checks if a beat has occurred in the audio by comparing the current sample position of the audio system's dsp time 
 	/// to the next expected sample value of the beat. The frequency of the checks is controlled by the loopTime field.
