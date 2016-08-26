@@ -52,7 +52,8 @@ public class EnemyAnimator : MonoBehaviour
 		AnimatorType.ATK2,
 		AnimatorType.ATK3,
 		AnimatorType.Move_L,
-		AnimatorType.Move_R
+		AnimatorType.Move_R,
+		AnimatorType.Block
 	};
 
 	void Start ()
