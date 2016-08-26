@@ -1,0 +1,4 @@
+##id	攻擊	防禦	血量
+id	Attack	Defence	HP
+string	int	int	int
+PlayerData001	5	2	50

@@ -9,7 +9,6 @@ using System;
 
 public class DataEnter : Singleton<DataEnter>
 {
-	
     public DataPlayer DataPlayer { set; get; }
 	public DataMusic DataMusic { set; get; }
 	public DataEnemy DataEnemy { set; get; }
@@ -19,7 +18,7 @@ public class DataEnter : Singleton<DataEnter>
 	
     public DataEnter()
     {
-    	//m_TableList.Add(typeof(TableTestDataScriptable), LoadTable(TableTestDataScriptable.GameTableName));
+    	m_TableList.Add(typeof(TablePlayerDataScriptable), LoadTable(TablePlayerDataScriptable.GameTableName));
     
         DataPlayer = new DataPlayer();
 		DataMusic = new DataMusic();

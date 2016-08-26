@@ -817,5 +817,35 @@ public class Utility
         }
     }
 
+    public struct GameObjectOperation
+    {
+        public GameObject FindClosestObject(GameObject myObj, string targetTag)
+        {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag(targetTag);
+            return FindClosestObject(myObj, objs);
+        }
 
+        public GameObject FindClosestObject(GameObject myObj, GameObject[] targetObjs)
+        {
+            float minDist = float.MaxValue;
+            GameObject closestObj = null;
+            for (int i=0,iCount=targetObjs.Length;i<iCount;++i)
+            {
+                Vector3 myPos = myObj.transform.position;
+                float dist = (targetObjs[i].transform.position - myPos).magnitude;
+                if (dist < minDist)
+                {
+                    dist = minDist;
+                    closestObj = targetObjs[i];
+                }
+            }
+            return closestObj;
+        }
+
+        public GameObject FindObjectInRange(GameObject myObj, string targetTag)
+        {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag(targetTag);
+            return FindClosestObject(myObj, objs);
+        }
+    }
 }
