@@ -18,6 +18,7 @@ public class MyCubeBehaviour : MonoBehaviour {
 
     void OnBeatMaskChange(BeatType beatMask)
     {
+        Debug.Log(Time.time);
         if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat)
         {
             anim.SetTrigger("DownBeatTrigger");
@@ -27,11 +28,14 @@ public class MyCubeBehaviour : MonoBehaviour {
             transform.Rotate(Vector3.forward, 45f);
         }
     }
+    
     /*
     void Update()
     {
+        
         if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat)
         {
+            Debug.Log(Time.time);
             anim.SetTrigger("DownBeatTrigger");
         }
         if ((beatObserver.beatMask & BeatType.UpBeat) == BeatType.UpBeat)
@@ -40,6 +44,7 @@ public class MyCubeBehaviour : MonoBehaviour {
         }
     }
     */
+    
 
     void OnDestroy()
     {
