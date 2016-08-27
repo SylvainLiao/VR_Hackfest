@@ -15,7 +15,7 @@ public class Config
 					"Jump",
 					"ATK1",
 					"ATK2",
-					"ATK3",
+					"ATK3"
 				};
 			}
 		}

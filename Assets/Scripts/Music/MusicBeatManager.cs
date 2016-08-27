@@ -17,13 +17,14 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 
 	void Start ()
 	{
-		Play (m_AudioClipMain [1]);
+		StartCoroutine (PlayMain ());
 
-		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
+		//PlayOneShotBeat();
 	}
 
-	public void Play (AudioClip clip)
+	public void Play (AudioClip clip, float volume = 1)
 	{
+		m_AudioMain.volume = volume;
 		m_AudioMain.clip = clip;
 		m_AudioMain.Play ();
 	}
@@ -34,6 +35,14 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 
 		if (OnBeatNotify != null)
 			OnBeatNotify ();
+	}
+
+	IEnumerator PlayMain ()
+	{
+		Play (m_AudioClipMain [0], 0.1f);
+		yield return new WaitForSeconds (3.075f);
+		Play (m_AudioClipMain [1], 0.1f);
+		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
 	}
 
 	public void PlayOneShot (AudioClip clip)
