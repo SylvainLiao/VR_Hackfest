@@ -35,7 +35,7 @@ public class EnemyAnimator : MonoBehaviour
 
 
 
-	bool _IsMoveHorizontal = false;
+	protected bool _IsMoveHorizontal = false;
 	bool _IsDeath = false;
 
 	int hashMove = Animator.StringToHash ("Base Layer.Move");
@@ -47,12 +47,12 @@ public class EnemyAnimator : MonoBehaviour
 	{
 	}
 
-	void OnEnable ()
+	public virtual void OnEnable ()
 	{
 		MusicBeatManager.Instance.OnBeatNotify += OnBeatNotify;
 	}
 
-	void OnDisable ()
+	public virtual void OnDisable ()
 	{
 		if (MusicBeatManager.Instance != null)
 			MusicBeatManager.Instance.OnBeatNotify -= OnBeatNotify;
@@ -87,7 +87,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	}
 
-	AnimatorType GetIndexStatus ()
+	protected AnimatorType GetIndexStatus ()
 	{
 		AnimatorType type = (UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Move : (AnimatorType)Enum.Parse (typeof(AnimatorType), Config.Enemy.m_Index [UnityEngine.Random.Range (0, Config.Enemy.m_Index.Length)]);
 
@@ -97,7 +97,7 @@ public class EnemyAnimator : MonoBehaviour
 		return type;
 	}
 
-	AnimatorType GetIndexArrivalStatus ()
+	protected AnimatorType GetIndexArrivalStatus ()
 	{
 		AnimatorType type = (AnimatorType)Enum.Parse (typeof(AnimatorType), Config.Enemy.m_IndexArrival [UnityEngine.Random.Range (0, Config.Enemy.m_IndexArrival.Length)]);
 
@@ -107,7 +107,7 @@ public class EnemyAnimator : MonoBehaviour
 		return type;
 	}
 
-	void SetStatus (AnimatorType type)
+	protected void SetStatus (AnimatorType type)
 	{
 		//print ("type:" + type);
 		m_AnimatorTypeLast = m_AnimatorType;
@@ -117,7 +117,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	public void TargetFollow ()
 	{
-		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > 3) {
+		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > m_PlayerDistance) {
 			
 		} else {
 			SetStatus (GetIndexArrivalStatus ());
@@ -127,7 +127,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	void Move ()
 	{
-		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > 3) {
+		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > m_PlayerDistance) {
 			this.transform.LookAt (m_GoTarget.transform);
 			this.transform.Translate (Vector3.forward * Time.deltaTime);
 		} else {

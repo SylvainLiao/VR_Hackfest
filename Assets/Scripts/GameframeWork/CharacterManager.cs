@@ -17,9 +17,19 @@ public class CharacterManager : MonoBehaviour
 
     public Enemy[] EnemyObjectsPool;
 
+    private void Start()
+    {
+        Initailize();
+    }
+
     public void Initailize()
     {
+        PlayerObject.Initailize();
 
+        foreach (var obj in EnemyObjectsPool)
+        {
+            obj.Initailize();
+        }
     }
 
     public Enemy GetEnmeyByName(string name)

@@ -216,7 +216,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 StartCoroutine(DefCoolDown(m_IsBlocking, m_Shield.transform.position));
                 Player player = this.GetComponent<Player>();
-                m_Shield.transform.position = player.HeadTransform.position + player.HeadTransform.forward * 1.0f;
+                m_Shield.transform.position = player.BodyTransform.position + player.BodyTransform.forward * 1.0f;
                 m_IsBlocking = true;       
             }
         }

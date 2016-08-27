@@ -11,7 +11,7 @@ public class PlayerWeapon : IEquipment
 
     private bool HitOnTempo = false;
 
-    private void Start()
+    void Start()
     {
         MusicBeatManager.Instance.OnBeatNotify += StartCoroutineTempo;
     }
@@ -36,6 +36,8 @@ public class PlayerWeapon : IEquipment
         Player player = CharacterData as Player;
         player.Attack(other.gameObject, HitOnTempo);
         HitOnTempo = false;
+
+        Debug.Log("-----HitOnTempo = "+ HitOnTempo+"------------");
     }
 
     private void StartCoroutineTempo()
@@ -53,6 +55,8 @@ public class PlayerWeapon : IEquipment
     private void AttakDetermination()
     {
         float moveDist = (this.transform.position - m_LastPosition).magnitude;
+
+        //Debug.Log("Swipe Distance = "+ moveDist);
 
         IsAttacking = (moveDist > AttackMinDistance);
 

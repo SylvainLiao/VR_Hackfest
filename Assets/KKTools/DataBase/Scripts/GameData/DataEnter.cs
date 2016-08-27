@@ -19,7 +19,9 @@ public class DataEnter : Singleton<DataEnter>
     public DataEnter()
     {
     	m_TableList.Add(typeof(TablePlayerDataScriptable), LoadTable(TablePlayerDataScriptable.GameTableName));
-    
+        m_TableList.Add(typeof(TableEnemyDataScriptable), LoadTable(TableEnemyDataScriptable.GameTableName));
+ 
+
         DataPlayer = new DataPlayer();
 		DataMusic = new DataMusic();
 		DataEnemy = new DataEnemy();

@@ -5,10 +5,14 @@ public class Enemy : ICharacter
 {
     private EnemyAnimator m_Animation;
 
+    public string EnemyDataIndex;
+
     // Use this for initialization
     public override void Initailize()
     {
-        m_TableDataBase = DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");
+        m_TableDataBase = DataEnter.Instance.GetTable<TableEnemyDataScriptable>().GetData(EnemyDataIndex);
+        TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
+        CurrentHP = enemyData.HP;
 
         m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
 
@@ -28,10 +32,13 @@ public class Enemy : ICharacter
 
     public override void Damaged(int atk, bool hitOnTempo)
     {
-        TablePlayerData playerData = m_TableDataBase as TablePlayerData;
+        if (!hitOnTempo)
+            return;
 
-        int dmg = atk - playerData.Defence;
-        CurrentHP -= hitOnTempo ? Mathf.RoundToInt(dmg * 1.5f) : dmg;
+        TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
+
+        int dmg = atk - enemyData.Defence;
+        //CurrentHP -= hitOnTempo ? Mathf.RoundToInt(dmg * 1.5f) : dmg;
 
         m_SoundPlayer.PlayOneShot(HitSound);
 

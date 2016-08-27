@@ -14,10 +14,12 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 	public delegate void OnBeatHandler ();
 
 	public event OnBeatHandler OnBeatNotify;
+	public event OnBeatHandler OnBeatHalfNotify;
 
 	void Start ()
 	{
-		StartCoroutine (PlayMain ());
+		StartCoroutine (PlayBattleNormal ());
+		//StartCoroutine (PlayBattleBoss ());
 
 		//PlayOneShotBeat();
 	}
@@ -37,12 +39,30 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 			OnBeatNotify ();
 	}
 
-	IEnumerator PlayMain ()
+	void OnBeatHalf ()
 	{
-		Play (m_AudioClipMain [0], 0.1f);
+		if (OnBeatHalfNotify != null)
+			OnBeatHalfNotify ();
+	}
+
+	IEnumerator PlayBattleNormal ()
+	{
+		m_BeatTime = 1.5f;
+		Play (m_AudioClipMain [0], 0.25f);
 		yield return new WaitForSeconds (3.075f);
-		Play (m_AudioClipMain [1], 0.1f);
+		Play (m_AudioClipMain [1], 0.25f);
 		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
+		InvokeRepeating ("OnBeatHalf", 0, m_BeatTime / 2);
+	}
+
+	IEnumerator PlayBattleBoss ()
+	{
+		m_BeatTime = 1;
+		Play (m_AudioClipMain [2], 0.25f);
+		yield return new WaitForSeconds (3.3f);
+		Play (m_AudioClipMain [3], 0.4f);
+		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
+		InvokeRepeating ("OnBeatHalf", 0, m_BeatTime / 2);
 	}
 
 	public void PlayOneShot (AudioClip clip)

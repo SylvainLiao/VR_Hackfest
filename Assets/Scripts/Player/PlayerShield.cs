@@ -34,17 +34,19 @@ public class PlayerShield : IEquipment
     private bool BlockDeter(Player player)
     {
         RaycastHit hitinfo;
-        if (!Physics.Raycast(player.HeadTransform.position, player.transform.forward, out hitinfo, float.MaxValue, 11))
+        if (!Physics.SphereCast(player.BodyTransform.position,0.3f, player.transform.forward, out hitinfo, float.MaxValue, 11))
             return false;
+        /*
         if (!hitinfo.collider.gameObject.GetComponent<PlayerShield>())
             return false;
-
+            */
         return true;
     }
     private IEnumerator BlockCD(Player player)
     {
         IsCoolDown = true;
         yield return new WaitForSeconds(player.GetPlayerData().BlockCD);
+        Debug.Log("Block CD Time" + player.GetPlayerData().BlockCD);
         IsCoolDown = false;
     }
 }
