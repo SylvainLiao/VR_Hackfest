@@ -34,28 +34,29 @@ public class EnemyAnimator : MonoBehaviour
 	private float _RandomTime;
 
 	bool _IsMoveHorizontal = false;
+	bool _IsDeath = false;
 
 	int hashMove = Animator.StringToHash ("Base Layer.Move");
 	int hashMoveL = Animator.StringToHash ("Base Layer.Move_L");
 	int hashMoveR = Animator.StringToHash ("Base Layer.Move_R");
 
-	int _count;
 
 	void Start ()
 	{
 		_RandomTime = m_RandomTime;
-		_count = 0;
 	}
 
 	void Update ()
 	{
+		if (_IsDeath)
+			return;
+
 		_RandomTime -= Time.deltaTime;
 
 		if (_RandomTime <= 0) {
 			SetStatus (GetIndexStatus ());
 			_RandomTime = m_RandomTime;
 			_IsMoveHorizontal = true;
-			_count++;
 		}
 
 		AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo (0);
@@ -131,5 +132,12 @@ public class EnemyAnimator : MonoBehaviour
 		}
 	}
 
+	public void Death ()
+	{
+		_IsDeath = true;
+		SetStatus ((UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Die1 : AnimatorType.Die2);
+
+		Destroy (this.gameObject, 3);
+	}
 
 }
