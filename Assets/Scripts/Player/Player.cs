@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBattle : IBattleController
+public class Player : ICharacter
 {
 
     // Use this for initialization
@@ -17,35 +17,35 @@ public class PlayerBattle : IBattleController
         return m_TableDataBase as TablePlayerData;
     }
 
-    public override void Defence(ITableClassBase data)
+    public override void Block()
     {
-        TablePlayerData playerData = m_TableDataBase as TablePlayerData;
-        TableEnemyData enemyData = data as TableEnemyData;
+        //TODO BlockSound
     }
 
-    protected override void Damaged(int atk)
+
+    public override void Damaged(int atk)
     {
         TablePlayerData playerData = m_TableDataBase as TablePlayerData;
         CurrentHP -= atk - playerData.Defence;
+
+        //TODO OnHitSound
+
+        if (OnHpChange != null)
+            OnHpChange(CurrentHP);
     }
 
-    //On Hit
+    //Player On Hit
     public void OnTriggerEnter(Collider other)
     {
         if (other.tag == Enum_CharacterTag.Player.ToString())
             return;
 
-        CharacterWeapon weapon = other.GetComponent<CharacterWeapon>();
+        PlayerWeapon weapon = other.GetComponent<PlayerWeapon>();
         //TODO : Filter Weapon or Shield
         if (weapon == null)
             return;
 
-        EnemyBattle targetBattle = weapon.Battle as EnemyBattle;
+        Enemy targetBattle = weapon.CharacterData as Enemy;
         Damaged(targetBattle.GetEnemyData().Attack);
-
-        if (OnHpChange != null)
-            OnHpChange(CurrentHP);
-        if (OnHit != null)
-            OnHit(other);
     }
 }

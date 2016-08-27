@@ -13,16 +13,16 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public PlayerBattle PlayerObject;
+    public Player PlayerObject;
 
-    public EnemyBattle[] EnemyObjectsPool;
+    public Enemy[] EnemyObjectsPool;
 
     public void Initailize()
     {
 
     }
 
-    public EnemyBattle GetEnmeyByName(string name)
+    public Enemy GetEnmeyByName(string name)
     {
         for (int i = 0, iCount = EnemyObjectsPool.Length; i < iCount; ++i)
         {
@@ -33,7 +33,7 @@ public class CharacterManager : MonoBehaviour
         return null;
     }
 
-    public PlayerBattle GetPlayer()
+    public Player GetPlayer()
     {
         return PlayerObject;
     }
