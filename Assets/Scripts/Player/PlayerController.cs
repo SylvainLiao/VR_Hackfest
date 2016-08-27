@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
@@ -32,6 +32,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private AudioSource m_AudioSource;
 
+        [Header("Pc Controller")]
+        public bool PlayInPC = false;
+        private GameObject m_Weapon;
+        private GameObject m_Shield;
+        private bool m_IsAttacking = false;
+        private bool m_IsBlocking = false;
+        public float WeaponSwipeDistance;
+
         // Use this for initialization
         private void Start()
         {
@@ -44,12 +52,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle/2f;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+
+            m_Weapon = this.GetComponent<Player>().Weapon.gameObject;
+            m_Shield = this.GetComponent<Player>().Shield.gameObject;
         }
 
         // Update is called once per frame
         private void Update()
         {
             RotateView();
+
+            PcControll();
         }
 
         private void FixedUpdate()
@@ -186,5 +199,45 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
+
+        private void PcControll()
+        {
+            if (!PlayInPC)
+                return;
+
+            if (Input.GetMouseButtonDown(0) && !m_IsAttacking)
+            {
+                StartCoroutine(AtkCoolDown(m_IsAttacking,m_Weapon.transform.position));
+                m_Weapon.transform.position += m_Weapon.transform.up * WeaponSwipeDistance;
+                m_IsAttacking = true;  
+            }
+
+            if (Input.GetMouseButtonDown(1) && !m_IsBlocking)
+            {
+                StartCoroutine(DefCoolDown(m_IsBlocking, m_Shield.transform.position));
+                Player player = this.GetComponent<Player>();
+                m_Shield.transform.position = player.HeadTransform.position + player.HeadTransform.forward * 1.0f;
+                m_IsBlocking = true;       
+            }
+        }
+
+        private IEnumerator AtkCoolDown(bool isAtk, Vector3 pos)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            m_Weapon.transform.position = pos;
+
+            isAtk = false;
+        }
+
+        private IEnumerator DefCoolDown(bool isBlock, Vector3 pos)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            m_Shield.transform.position = pos;
+
+            isBlock = false;
+        }
     }
+
 }

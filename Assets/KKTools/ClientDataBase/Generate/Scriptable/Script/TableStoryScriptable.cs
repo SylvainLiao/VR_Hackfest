@@ -8,14 +8,14 @@ using UnityEditor;
 #endif
 
 [Serializable]
-public class DictionaryTablePlayerData : SerializableDictionary<string, TablePlayerData> { }
+public class DictionaryTableStory : SerializableDictionary<string, TableStory> { }
 
 
-public class TablePlayerDataScriptable : ScriptableObjectBase
+public class TableStoryScriptable : ScriptableObjectBase
 {
-    public static string GameTableName = "PlayerData";
-	public List<TablePlayerData> m_TableList = new List<TablePlayerData>();
-	public DictionaryTablePlayerData m_TableDict = new DictionaryTablePlayerData();
+    public static string GameTableName = "Story";
+	public List<TableStory> m_TableList = new List<TableStory>();
+	public DictionaryTableStory m_TableDict = new DictionaryTableStory();
 
 #if UNITY_EDITOR
 	string path;
@@ -52,12 +52,14 @@ public class TablePlayerDataScriptable : ScriptableObjectBase
 			        
                 string[] splitStr = strTemp.Split("\t"[0]);
 
-				TablePlayerData table = new TablePlayerData();
+				TableStory table = new TableStory();
 				table.id = (string)Convert.ChangeType(splitStr[0], typeof(string));
-				table.Attack = (int)Convert.ChangeType(splitStr[1], typeof(int));
-				table.Defence = (int)Convert.ChangeType(splitStr[2], typeof(int));
-				table.HP = (int)Convert.ChangeType(splitStr[3], typeof(int));
-				table.BlockCD = (float)Convert.ChangeType(splitStr[4], typeof(float));
+				table.TalkerObjName = (string)Convert.ChangeType(splitStr[1], typeof(string));
+				table.FaceObjName = (string)Convert.ChangeType(splitStr[2], typeof(string));
+				table.Talk = (string)Convert.ChangeType(splitStr[3], typeof(string));
+				table.Talker = (string)Convert.ChangeType(splitStr[4], typeof(string));
+				table.TalkTime = (float)Convert.ChangeType(splitStr[5], typeof(float));
+				table.AnimIndex = (int)Convert.ChangeType(splitStr[6], typeof(int));
 
                 m_TableList.Add(table);
 
@@ -78,7 +80,7 @@ public class TablePlayerDataScriptable : ScriptableObjectBase
 
 	void MakeUpDictionary()
     {
-        foreach (TablePlayerData item in m_TableList)
+        foreach (TableStory item in m_TableList)
             m_TableDict.Add(item.id, item);
 
 		Debug.Log(string.Format("[{0}] GameTable Asset Dictionary is Update. Source:[{1}]", this.name, path));
@@ -87,7 +89,7 @@ public class TablePlayerDataScriptable : ScriptableObjectBase
     public override bool LoadGameTable() { return false; }
 #endif
 
-    public TablePlayerData GetData(string id)
+    public TableStory GetData(string id)
     {
         if (m_TableDict.ContainsKey(id))
         {

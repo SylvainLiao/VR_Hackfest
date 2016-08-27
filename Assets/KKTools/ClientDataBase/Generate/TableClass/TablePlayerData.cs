@@ -31,4 +31,11 @@ public class TablePlayerData : ITableClassBase
     public int HP { get { return _HP; } set { _HP = value; } }
 	[SerializeField] 
 	private int _HP;
+
+	/// <summary>
+    /// 防禦冷卻
+    /// </summary>
+    public float BlockCD { get { return _BlockCD; } set { _BlockCD = value; } }
+	[SerializeField] 
+	private float _BlockCD;
 }

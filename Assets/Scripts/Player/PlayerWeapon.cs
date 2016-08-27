@@ -9,11 +9,17 @@ public class PlayerWeapon : IEquipment
 
     private Vector3 m_LastPosition;
 
-    /*
+    private bool HitOnTempo = false;
+
+    private void Start()
+    {
+        MusicBeatManager.Instance.OnBeatNotify += StartCoroutineTempo;
+    }
+
     private void FixedUpdate()
     {
         AttakDetermination();
-    }*/
+    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -28,23 +34,22 @@ public class PlayerWeapon : IEquipment
             return;
 
         Player player = CharacterData as Player;
-
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            enemy.Damaged(player.GetPlayerData().Attack);
-            return;
-        }
-
-        EnemyShield shield = other.GetComponent<EnemyShield>();
-        if (shield != null)
-        {
-            enemy = shield.CharacterData as Enemy;
-            enemy.Block();
-        }
+        player.Attack(other.gameObject, HitOnTempo);
+        HitOnTempo = false;
     }
 
-    /*
+    private void StartCoroutineTempo()
+    {
+        StartCoroutine(TempoDetermination());
+    }
+
+    private IEnumerator TempoDetermination()
+    {
+        HitOnTempo = true;
+        yield return new WaitForSeconds(0.3f);
+        HitOnTempo = false;
+    }
+
     private void AttakDetermination()
     {
         float moveDist = (this.transform.position - m_LastPosition).magnitude;
@@ -52,6 +57,6 @@ public class PlayerWeapon : IEquipment
         IsAttacking = (moveDist > AttackMinDistance);
 
         m_LastPosition = this.transform.position;
-    }*/
+    }
 
 }
