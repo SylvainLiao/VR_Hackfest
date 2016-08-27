@@ -29,17 +29,23 @@ public class PlayerBattle : IBattleController
         CurrentHP -= atk - playerData.Defence;
     }
 
+    //On Hit
     public void OnTriggerEnter(Collider other)
     {
         if (other.tag == Enum_CharacterTag.Player.ToString())
             return;
 
+        CharacterWeapon weapon = other.GetComponent<CharacterWeapon>();
         //TODO : Filter Weapon or Shield
+        if (weapon == null)
+            return;
 
-        EnemyBattle targetBattle = CharacterManager.Instance.GetEnmeyByName(other.name);
+        EnemyBattle targetBattle = weapon.Battle as EnemyBattle;
         Damaged(targetBattle.GetEnemyData().Attack);
 
         if (OnHpChange != null)
             OnHpChange(CurrentHP);
+        if (OnHit != null)
+            OnHit(other);
     }
 }

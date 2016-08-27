@@ -19,6 +19,9 @@ public abstract class IBattleController : MonoBehaviour
     public delegate void OnHitEvent(Collider collider);
     public OnHitEvent OnHit;
 
+    public delegate void OnAttackEvent(Collider collider);
+    public OnAttackEvent OnAttack;
+
     // Use this for initialization
     public abstract void Initailize();
     // m_PlayerData= DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");

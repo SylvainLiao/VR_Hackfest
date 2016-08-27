@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CharacterColliderWeaponCheck : MonoBehaviour
+public class CharacterWeapon : MonoBehaviour
 {
-	
+    public IBattleController Battle;
 }
