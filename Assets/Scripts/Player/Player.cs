@@ -7,6 +7,8 @@ public class Player : ICharacter
 
     public float m_TempoEffectiveTime;
 
+    private bool IsDead;
+
     // Use this for initialization
     public override void Initailize()
     {
@@ -24,8 +26,10 @@ public class Player : ICharacter
 
     public void Attack(GameObject target, bool hitOnTempo)
     {
-        Debug.Log("Battle: Player Attack!");
+        if (IsDead)
+            return;
 
+        //Debug.Log("Battle: Player Attack!");
 
         m_SoundPlayer.PlayOneShot(AttackSound);
 
@@ -46,12 +50,18 @@ public class Player : ICharacter
 
     public override void Block()
     {
+        if (IsDead)
+            return;
+
         Debug.Log("Battle: " + this.name + " Block!");
         m_SoundPlayer.PlayOneShot(BlockSound);
     }
 
     public override void Damaged(int atk, bool hitOnTempo)
     {
+        if (IsDead)
+            return;
+
         TablePlayerData playerData = m_TableDataBase as TablePlayerData;
 
         int dmg = atk - playerData.Defence;
@@ -75,6 +85,7 @@ public class Player : ICharacter
         Debug.Log("Battle: " + this.name + " Dead!");
 
         //TODO : Game Over
+        IsDead = true;
 
         m_SoundPlayer.PlayOneShot(DeadSound);
     }
