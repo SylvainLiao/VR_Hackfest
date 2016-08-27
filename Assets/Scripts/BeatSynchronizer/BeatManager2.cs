@@ -3,11 +3,12 @@ using System.Collections;
 
 public class BeatManager2 : MonoBehaviour {
     public delegate void OnBeatCallback(float gameTime);
+	public event OnBeatCallback onBeatCallback;
+
     public AudioSource backgroundAudioSource;
     public AudioSource beatAudioSource;
     public float startDelay;
     public float repeatRate;
-    private OnBeatCallback onBeatCallback;
 	// Use this for initialization
 	void Start () {
         double initTime = AudioSettings.dspTime;
