@@ -31,31 +31,52 @@ public class EnemyAnimator : MonoBehaviour
 	public float m_PlayerDistance;
 	public float m_RandomTime;
 
+	public AudioSource m_AudioSource;
+	public AudioClip[] m_AudioClipWeapon;
+
+
 	private float _RandomTime;
 
 	bool _IsMoveHorizontal = false;
+	bool _IsDeath = false;
 
 	int hashMove = Animator.StringToHash ("Base Layer.Move");
 	int hashMoveL = Animator.StringToHash ("Base Layer.Move_L");
 	int hashMoveR = Animator.StringToHash ("Base Layer.Move_R");
 
-	int _count;
 
 	void Start ()
 	{
 		_RandomTime = m_RandomTime;
-		_count = 0;
+	}
+
+	void OnEnable ()
+	{
+		MusicBeatManager.Instance.OnBeatNotify += OnBeatNotify;
+	}
+
+	void OnDisable ()
+	{
+		if (MusicBeatManager.Instance != null)
+			MusicBeatManager.Instance.OnBeatNotify -= OnBeatNotify;
+	}
+
+	void OnBeatNotify ()
+	{
+		Debug.Log ("OnBeatNotify");
 	}
 
 	void Update ()
 	{
+		if (_IsDeath)
+			return;
+
 		_RandomTime -= Time.deltaTime;
 
 		if (_RandomTime <= 0) {
 			SetStatus (GetIndexStatus ());
 			_RandomTime = m_RandomTime;
 			_IsMoveHorizontal = true;
-			_count++;
 		}
 
 		AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo (0);
@@ -131,5 +152,16 @@ public class EnemyAnimator : MonoBehaviour
 		}
 	}
 
+	public void Death ()
+	{
+		_IsDeath = true;
+		SetStatus ((UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Die1 : AnimatorType.Die2);
 
+		Destroy (this.gameObject, 3);
+	}
+
+	public void PlayWeapon ()
+	{
+		m_AudioSource.PlayOneShot (m_AudioClipWeapon [UnityEngine.Random.Range (0, m_AudioClipWeapon.Length)], 0.6f);
+	}
 }
