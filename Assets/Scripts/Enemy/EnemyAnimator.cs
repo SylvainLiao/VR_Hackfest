@@ -29,13 +29,11 @@ public class EnemyAnimator : MonoBehaviour
 	public GameObject m_GoTarget;
 	public Animator m_Animator;
 	public float m_PlayerDistance;
-	public float m_RandomTime;
 
 	public AudioSource m_AudioSource;
 	public AudioClip[] m_AudioClipWeapon;
 
 
-	private float _RandomTime;
 
 	bool _IsMoveHorizontal = false;
 	bool _IsDeath = false;
@@ -47,7 +45,6 @@ public class EnemyAnimator : MonoBehaviour
 
 	void Start ()
 	{
-		_RandomTime = m_RandomTime;
 	}
 
 	void OnEnable ()
@@ -64,20 +61,15 @@ public class EnemyAnimator : MonoBehaviour
 	void OnBeatNotify ()
 	{
 		//Debug.Log ("OnBeatNotify");
+		SetStatus (GetIndexStatus ());
+		_IsMoveHorizontal = true;
 	}
 
 	void Update ()
 	{
 		if (_IsDeath)
 			return;
-
-		_RandomTime -= Time.deltaTime;
-
-		if (_RandomTime <= 0) {
-			SetStatus (GetIndexStatus ());
-			_RandomTime = m_RandomTime;
-			_IsMoveHorizontal = true;
-		}
+		
 
 		AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo (0);
 
@@ -162,6 +154,6 @@ public class EnemyAnimator : MonoBehaviour
 
 	public void PlayWeapon ()
 	{
-		m_AudioSource.PlayOneShot (m_AudioClipWeapon [UnityEngine.Random.Range (0, m_AudioClipWeapon.Length)], 0.6f);
+		m_AudioSource.PlayOneShot (m_AudioClipWeapon [UnityEngine.Random.Range (0, m_AudioClipWeapon.Length)], 0.2f);
 	}
 }
