@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Player : ICharacter
 {
+    public Transform HeadTransform;
+
+    public float m_TempoEffectiveTime;
 
     // Use this for initialization
     public override void Initailize()
@@ -10,6 +13,8 @@ public class Player : ICharacter
         m_TableDataBase = DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");
         TablePlayerData playerData = m_TableDataBase as TablePlayerData;
         CurrentHP = playerData.HP;
+
+        m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
     }
 
     public TablePlayerData GetPlayerData()
@@ -17,21 +22,56 @@ public class Player : ICharacter
         return m_TableDataBase as TablePlayerData;
     }
 
-    public override void Block()
+    public void Attack(GameObject target, bool hitOnTempo)
     {
-        //TODO BlockSound
+        Debug.Log("Battle: Player Attack!");
+
+
+        m_SoundPlayer.PlayOneShot(AttackSound);
+
+        Enemy enemy = target.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            enemy.Damaged(GetPlayerData().Attack, hitOnTempo);
+            return;
+        }
+
+        EnemyShield shield = target.GetComponent<EnemyShield>();
+        if (shield != null)
+        {
+            enemy = shield.CharacterData as Enemy;
+            enemy.Block();
+        }
     }
 
+    public override void Block()
+    {
+        Debug.Log("Battle: " + this.name + " Block!");
+        m_SoundPlayer.PlayOneShot(BlockSound);
+    }
 
-    public override void Damaged(int atk)
+    public override void Damaged(int atk, bool hitOnTempo)
     {
         TablePlayerData playerData = m_TableDataBase as TablePlayerData;
-        CurrentHP -= atk - playerData.Defence;
 
-        //TODO OnHitSound
+        int dmg = atk - playerData.Defence;
+        CurrentHP -= dmg;
+
+        m_SoundPlayer.PlayOneShot(HitSound);
 
         if (OnHpChange != null)
             OnHpChange(CurrentHP);
+
+        Debug.Log("Battle: " + this.name + " Damaged! CurrentHP = " + CurrentHP);
+    }
+
+    public override void Dead()
+    {
+        Debug.Log("Battle: " + this.name + " Dead!");
+
+        //TODO : Game Over
+
+        m_SoundPlayer.PlayOneShot(DeadSound);
     }
 
     //Player On Hit
@@ -46,6 +86,6 @@ public class Player : ICharacter
             return;
 
         Enemy targetBattle = weapon.CharacterData as Enemy;
-        Damaged(targetBattle.GetEnemyData().Attack);
+        Damaged(targetBattle.GetEnemyData().Attack, false);
     }
 }
