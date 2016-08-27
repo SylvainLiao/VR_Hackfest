@@ -63,7 +63,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	void OnBeatNotify ()
 	{
-		Debug.Log ("OnBeatNotify");
+		//Debug.Log ("OnBeatNotify");
 	}
 
 	void Update ()
@@ -126,7 +126,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	public void TargetFollow ()
 	{
-		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > 3) {
+		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > m_PlayerDistance) {
 			
 		} else {
 			SetStatus (GetIndexArrivalStatus ());
@@ -136,7 +136,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	void Move ()
 	{
-		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > 3) {
+		if (Vector3.Distance (this.transform.position, m_GoTarget.transform.position) > m_PlayerDistance) {
 			this.transform.LookAt (m_GoTarget.transform);
 			this.transform.Translate (Vector3.forward * Time.deltaTime);
 		} else {

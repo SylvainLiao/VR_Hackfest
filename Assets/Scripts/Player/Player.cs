@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : ICharacter
 {
-    public Transform HeadTransform;
+    public Transform BodyTransform;
 
     public float m_TempoEffectiveTime;
 
@@ -62,6 +62,11 @@ public class Player : ICharacter
         if (OnHpChange != null)
             OnHpChange(CurrentHP);
 
+        if (CurrentHP <= 0)
+        {
+            Dead();
+        }
+
         Debug.Log("Battle: " + this.name + " Damaged! CurrentHP = " + CurrentHP);
     }
 
@@ -80,12 +85,13 @@ public class Player : ICharacter
         if (other.tag == Enum_CharacterTag.Player.ToString())
             return;
 
-        PlayerWeapon weapon = other.GetComponent<PlayerWeapon>();
+        EnemyWeapon weapon = other.GetComponent<EnemyWeapon>();
         //TODO : Filter Weapon or Shield
         if (weapon == null)
             return;
 
         Enemy targetBattle = weapon.CharacterData as Enemy;
-        Damaged(targetBattle.GetEnemyData().Attack, false);
+        TableEnemyData data = targetBattle.GetEnemyData();
+        Damaged(data.Attack, false);
     }
 }

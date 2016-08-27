@@ -54,6 +54,8 @@ public class PlayerWeapon : IEquipment
     {
         float moveDist = (this.transform.position - m_LastPosition).magnitude;
 
+        Debug.Log("Swipe Distance = "+ moveDist);
+
         IsAttacking = (moveDist > AttackMinDistance);
 
         m_LastPosition = this.transform.position;
