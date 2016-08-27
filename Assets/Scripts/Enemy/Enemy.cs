@@ -5,10 +5,14 @@ public class Enemy : ICharacter
 {
     private EnemyAnimator m_Animation;
 
+    public string EnemyDataIndex;
+
     // Use this for initialization
     public override void Initailize()
     {
-        m_TableDataBase = DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");
+        m_TableDataBase = DataEnter.Instance.GetTable<TableEnemyDataScriptable>().GetData(EnemyDataIndex);
+        TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
+        CurrentHP = enemyData.HP;
 
         m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
 
