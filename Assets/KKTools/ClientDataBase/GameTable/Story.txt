@@ -1,0 +1,9 @@
+##id	說話者物件名稱	面向物件名稱	說話	說話	說話時間	動作Index
+id	TalkerObjName	FaceObjName	Talk	Talker	TalkTime	AnimIndex
+string	string	string	string	string	float	int
+Saladin001	Saladin	Lue	你們家雷納不斷掠奪我們的商隊，還俘虜了商人們! 快把他們放了!	薩拉丁	2	12
+Lue002	Lue	Renauld	欸~ 薩拉丁叫你放了商人們~ 咖乖ㄟ~ 不要讓我難做人~	居伊	2	1
+Renauld003	Renauld	Lue	不要勒~	雷納	2	1
+Lue004	Lue	Renauld	E04....	居伊	2	1
+Lue005	Lue	Saladin	他不放人	居伊	2	1
+Saladin006	Saladin	Lue	那就別怪我了!!	薩拉丁	2	13

@@ -9,7 +9,6 @@ public class Config
 			get {
 				return new string[] { 
 					"Idle",
-					"Victory",
 					"Block",
 					"Damage",
 					"Dash",

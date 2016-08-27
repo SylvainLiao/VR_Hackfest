@@ -57,6 +57,7 @@ public class TablePlayerDataScriptable : ScriptableObjectBase
 				table.Attack = (int)Convert.ChangeType(splitStr[1], typeof(int));
 				table.Defence = (int)Convert.ChangeType(splitStr[2], typeof(int));
 				table.HP = (int)Convert.ChangeType(splitStr[3], typeof(int));
+				table.BlockCD = (float)Convert.ChangeType(splitStr[4], typeof(float));
 
                 m_TableList.Add(table);
 
