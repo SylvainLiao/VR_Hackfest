@@ -2,34 +2,34 @@
 using System.Collections;
 using SynchronizerData;
 
-public class MyCubeBehaviour : MonoBehaviour {
-    private Animator anim;
-    BeatObserver beatObserver;
-    public BeatValue beatValue = BeatValue.WholeBeat;
+public class MyCubeBehaviour : MonoBehaviour
+{
+	private Animator anim;
+	BeatObserver beatObserver;
+	public BeatValue beatValue = BeatValue.WholeBeat;
 	// Use this for initialization
-	void Start () {
-        anim = GetComponent<Animator>();
-        BeatManager bm = Object.FindObjectOfType<BeatManager>();
-        //beatObserver = GetComponent<BeatObserver>();
-        beatObserver = bm.AddAndRegisterBeatObserver(beatValue, gameObject);
-        beatObserver.onBeatMaskChange += OnBeatMaskChange;
+	void Start ()
+	{
+		anim = GetComponent<Animator> ();
+		BeatManager bm = Object.FindObjectOfType<BeatManager> ();
+		//beatObserver = GetComponent<BeatObserver>();
+		beatObserver = bm.AddAndRegisterBeatObserver (beatValue, gameObject);
+		beatObserver.onBeatMaskChange += OnBeatMaskChange;
 
-    }
+	}
 
-    void OnBeatMaskChange(BeatType beatMask, float beatTime)
-    {
-        Debug.Log(beatTime);
-        if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat)
-        {
-            anim.SetTrigger("DownBeatTrigger");
-        }
-        if ((beatObserver.beatMask & BeatType.UpBeat) == BeatType.UpBeat)
-        {
-            transform.Rotate(Vector3.forward, 45f);
-        }
-    }
+	void OnBeatMaskChange (BeatType beatMask, float beatTime)
+	{
+		//Debug.Log(beatTime);
+		if ((beatObserver.beatMask & BeatType.DownBeat) == BeatType.DownBeat) {
+			anim.SetTrigger ("DownBeatTrigger");
+		}
+		if ((beatObserver.beatMask & BeatType.UpBeat) == BeatType.UpBeat) {
+			transform.Rotate (Vector3.forward, 45f);
+		}
+	}
     
-    /*
+	/*
     void Update()
     {
         
@@ -46,9 +46,9 @@ public class MyCubeBehaviour : MonoBehaviour {
     */
     
 
-    void OnDestroy()
-    {
-        //BeatManager bm = Object.FindObjectOfType<BeatManager>();
-        //bm.RemoveBeatObserver(beatValue, beatObserver);
-    }
+	void OnDestroy ()
+	{
+		//BeatManager bm = Object.FindObjectOfType<BeatManager>();
+		//bm.RemoveBeatObserver(beatValue, beatObserver);
+	}
 }

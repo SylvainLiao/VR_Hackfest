@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class EnemyAnimator : MonoBehaviour
 {
@@ -40,22 +41,6 @@ public class EnemyAnimator : MonoBehaviour
 
 	int _count;
 
-	AnimatorType[] m_Index = new AnimatorType[] { 
-		AnimatorType.Move,
-		AnimatorType.ATK1,
-		AnimatorType.Idle,
-		AnimatorType.Block
-	};
-
-	AnimatorType[] m_IndexArrival = new AnimatorType[] {
-		AnimatorType.ATK1,
-		AnimatorType.ATK2,
-		AnimatorType.ATK3,
-		AnimatorType.Move_L,
-		AnimatorType.Move_R,
-		AnimatorType.Block
-	};
-
 	void Start ()
 	{
 		_RandomTime = m_RandomTime;
@@ -68,7 +53,6 @@ public class EnemyAnimator : MonoBehaviour
 
 		if (_RandomTime <= 0) {
 			SetStatus (GetIndexStatus ());
-			//SetStatus ((AnimatorType)Random.Range (0, 14));
 			_RandomTime = m_RandomTime;
 			_IsMoveHorizontal = true;
 			_count++;
@@ -93,7 +77,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	AnimatorType GetIndexStatus ()
 	{
-		AnimatorType type = m_Index [Random.Range (0, m_Index.Length)];
+		AnimatorType type = (UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Move : (AnimatorType)Enum.Parse (typeof(AnimatorType), Config.Enemy.m_Index [UnityEngine.Random.Range (0, Config.Enemy.m_Index.Length)]);
 
 		if (m_AnimatorTypeLast == type)
 			return GetIndexStatus ();
@@ -103,7 +87,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	AnimatorType GetIndexArrivalStatus ()
 	{
-		AnimatorType type = m_IndexArrival [Random.Range (0, m_IndexArrival.Length)];
+		AnimatorType type = (AnimatorType)Enum.Parse (typeof(AnimatorType), Config.Enemy.m_IndexArrival [UnityEngine.Random.Range (0, Config.Enemy.m_IndexArrival.Length)]);
 
 		if (m_AnimatorTypeLast == type)
 			return GetIndexArrivalStatus ();
