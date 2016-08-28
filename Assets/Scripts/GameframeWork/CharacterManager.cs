@@ -23,7 +23,6 @@ public class CharacterManager : MonoBehaviour
 	private void Start ()
 	{
 		Initailize ();
-		GameStartFight ();
 	}
 
 	public void Initailize ()

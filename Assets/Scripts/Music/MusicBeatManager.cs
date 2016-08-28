@@ -17,6 +17,11 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 	public event OnBeatHandler OnBeatHalfNotify;
 
 
+	public delegate void OnBeatChangeHandler (float beat);
+
+	public event OnBeatChangeHandler OnBeatChangeNotify;
+
+
 	public void Play (AudioClip clip, float volume = 1)
 	{
 		m_AudioMain.volume = volume;
@@ -59,6 +64,9 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 		Play (m_AudioClipMain [1], 0.25f);
 		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
 		InvokeRepeating ("OnBeatHalf", 0, m_BeatTime / 2);
+
+		if (OnBeatChangeNotify != null)
+			OnBeatChangeNotify (m_BeatTime);
 	}
 
 	IEnumerator PlayBattleBoss ()
@@ -72,6 +80,10 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 		Play (m_AudioClipMain [3], 0.4f);
 		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
 		InvokeRepeating ("OnBeatHalf", 0, m_BeatTime / 2);
+
+
+		if (OnBeatChangeNotify != null)
+			OnBeatChangeNotify (m_BeatTime);
 	}
 
 	public void PlayOneShot (AudioClip clip)
