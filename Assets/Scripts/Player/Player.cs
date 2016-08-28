@@ -3,20 +3,28 @@ using System.Collections;
 
 public class Player : ICharacter
 {
+    public int Combo;
+
     public Transform BodyTransform;
 
     public float m_TempoEffectiveTime;
 
     private bool IsDead;
 
-    // Use this for initialization
-    public override void Initailize()
+    private WeaponEmission m_Emission;
+    private void Start()
     {
-        m_TableDataBase = DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");
+        m_TableDataBase = DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");  
+        m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
+        m_Emission = Weapon.GetComponent<WeaponEmission>();
+        DataReset();
+    }
+
+    public void DataReset()
+    {
         TablePlayerData playerData = m_TableDataBase as TablePlayerData;
         CurrentHP = playerData.HP;
-
-        m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
+        Combo = 0;
     }
 
     public TablePlayerData GetPlayerData()
@@ -37,6 +45,17 @@ public class Player : ICharacter
         if (enemy != null)
         {
             enemy.Damaged(GetPlayerData().Attack, hitOnTempo);
+            if (hitOnTempo)
+            {
+                m_Emission.Brightness += 0.1f;
+                Combo++;
+            }
+            /*
+            else
+            {
+                m_Emission.Brightness = 0.0f;
+                Combo = 0;
+            }*/
             return;
         }
 
@@ -89,6 +108,8 @@ public class Player : ICharacter
         IsDead = true;
 
         m_SoundPlayer.PlayOneShot(DeadSound);
+
+        VRApplication.Instance.UiCanvas.GameOver.gameObject.SetActive(true);
     }
 
     //Player On Hit

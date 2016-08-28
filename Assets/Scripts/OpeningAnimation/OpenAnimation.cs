@@ -5,6 +5,15 @@ using System;
 using System.Collections.Generic;
 
 public class OpenAnimation : MonoBehaviour {
+
+    public GameSceneController m_GameSceneController;
+    public GameObject ViveCameraPrefab;
+    public GameObject BlackFilterAnimatorHolder;
+    public GameObject ScreenCanvas;
+    public Vector3 battlePosition = new Vector3(-31f, 0.9f, -4f);
+    public GameObject UICamera;
+    public GameObject ViveControllerLeft;
+    public GameObject ViveControllerRight;
     public struct OpeningAnimationAction
     {
         public string dialogContent;
@@ -87,6 +96,11 @@ SaladinText, SaladinAnimator, 13));
         if (index == 7)
         {
             //go to battle
+            ScreenCanvas.SetActive(true);
+            BlackFilterAnimatorHolder.SetActive(true);
+            UICamera.SetActive(true);
+            //BlackFilterAnimatorHolder.GetComponent<Animator>().Play("FadeIn", 0);
+            Invoke("AfterExecuteFadeIn", 0.5f);
         }
         else
         {
@@ -95,5 +109,21 @@ SaladinText, SaladinAnimator, 13));
             oaa.animator.SetAnimation(oaa.animationIndex);
         }
 
+    }
+
+    public void AfterExecuteFadeIn()
+    {
+        ViveCameraPrefab.transform.position = battlePosition;
+        BlackFilterAnimatorHolder.GetComponent<Animator>().Play("FadeOut", 0);
+        Invoke("AfterExecuteFadeOut", 0.5f);
+    }
+
+    public void AfterExecuteFadeOut()
+    {
+        BlackFilterAnimatorHolder.SetActive(false);
+        ScreenCanvas.SetActive(false);
+        ViveControllerLeft.SetActive(true);
+        ViveControllerRight.SetActive(true);
+        m_GameSceneController.EndOpening();
     }
 }

@@ -45,8 +45,16 @@ public class PlayerShield : IEquipment
     private IEnumerator BlockCD(Player player)
     {
         IsCoolDown = true;
-        yield return new WaitForSeconds(player.GetPlayerData().BlockCD);
-        Debug.Log("Block CD Time" + player.GetPlayerData().BlockCD);
+        yield return new WaitForSeconds(MusicBeatManager.Instance.m_BeatTime * 2);
+        Debug.Log("Block CD Time" + MusicBeatManager.Instance.m_BeatTime * 2);
         IsCoolDown = false;
+    }
+
+    void Update()
+    {
+        if (IsCoolDown)
+        {
+            //Shield Color
+        }
     }
 }
