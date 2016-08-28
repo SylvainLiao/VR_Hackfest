@@ -12,7 +12,7 @@ public class Player : ICharacter
     private bool IsDead;
 
     private WeaponEmission m_Emission;
-    private void Start()
+    public void Initailize()
     {
         m_TableDataBase = DataEnter.Instance.GetTable<TablePlayerDataScriptable>().GetData("PlayerData001");  
         m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
@@ -44,7 +44,6 @@ public class Player : ICharacter
         Enemy enemy = target.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.Damaged(GetPlayerData().Attack, hitOnTempo);
             if (hitOnTempo)
             {
                 m_Emission.Brightness += 0.1f;
@@ -56,6 +55,9 @@ public class Player : ICharacter
                 m_Emission.Brightness = 0.0f;
                 Combo = 0;
             }*/
+
+            enemy.Damaged(GetPlayerData().Attack+Combo, hitOnTempo);
+           
             return;
         }
 
@@ -87,6 +89,8 @@ public class Player : ICharacter
         if (dmg <= 0) dmg = 0;
         CurrentHP -= dmg;
 
+        VRApplication.Instance.UiCanvas.PlayerOnHitEffect();
+
         m_SoundPlayer.PlayOneShot(HitSound);
 
         if (OnHpChange != null)
@@ -109,7 +113,7 @@ public class Player : ICharacter
 
         m_SoundPlayer.PlayOneShot(DeadSound);
 
-        VRApplication.Instance.UiCanvas.GameOver.gameObject.SetActive(true);
+        VRApplication.Instance.GameOver();
     }
 
     //Player On Hit

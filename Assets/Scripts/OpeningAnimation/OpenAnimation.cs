@@ -10,7 +10,7 @@ public class OpenAnimation : MonoBehaviour {
     public GameObject ViveCameraPrefab;
     public GameObject BlackFilterAnimatorHolder;
     public GameObject ScreenCanvas;
-    public Vector3 battlePosition = new Vector3(-31f, 0.9f, -4f);
+    public Transform battleTransform;
     public GameObject UICamera;
     public GameObject ViveControllerLeft;
     public GameObject ViveControllerRight;
@@ -94,6 +94,7 @@ SaladinText, SaladinAnimator, 13));
     public void TestAnimationEvemt(int index)
     {
         if (index == 7)
+        //if (index == 0)
         {
             //go to battle
             ScreenCanvas.SetActive(true);
@@ -113,7 +114,7 @@ SaladinText, SaladinAnimator, 13));
 
     public void AfterExecuteFadeIn()
     {
-        ViveCameraPrefab.transform.position = battlePosition;
+        ViveCameraPrefab.transform.position = battleTransform.position;
         BlackFilterAnimatorHolder.GetComponent<Animator>().Play("FadeOut", 0);
         Invoke("AfterExecuteFadeOut", 0.5f);
     }
@@ -121,7 +122,7 @@ SaladinText, SaladinAnimator, 13));
     public void AfterExecuteFadeOut()
     {
         BlackFilterAnimatorHolder.SetActive(false);
-        ScreenCanvas.SetActive(false);
+        ScreenCanvas.SetActive(true);
         ViveControllerLeft.SetActive(true);
         ViveControllerRight.SetActive(true);
         m_GameSceneController.EndOpening();

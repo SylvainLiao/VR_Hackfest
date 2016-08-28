@@ -2,17 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManager : SingletonObject<CharacterManager>
 {
-	private static CharacterManager m_instance;
+    public GameObject m_GoViveCameraPrefab;
+    public Transform m_TransViveSeeker;
 
-	public static CharacterManager Instance {
-		get {
-			return (m_instance == null) ? new CharacterManager () : m_instance;
-		}
-	}
-
-	public delegate void DeathNofity (int level);
+    public delegate void DeathNofity (int level);
 
 	public event DeathNofity DeathHandle;
 
@@ -45,19 +40,38 @@ public class CharacterManager : MonoBehaviour
 		if (_DeathCount == m_EnemyWave1.Length) {
 			if (DeathHandle != null)
 				DeathHandle (1);
-		} else if (_DeathCount == m_EnemyWave1.Length + m_EnemyWave2.Length) {
+
+            PlayerObject.DataReset();
+
+            GameStartWave2();
+            print("DeathHandle 1");
+        }
+        else if (_DeathCount == m_EnemyWave1.Length + m_EnemyWave2.Length) {
 			if (DeathHandle != null)
 				DeathHandle (2);
-		} else if (_DeathCount == m_EnemyWave1.Length + m_EnemyWave2.Length + m_EnemyBoss.Length) {
+
+            PlayerObject.DataReset();
+
+            GameStartFight();
+            print("DeathHandle 2");
+
+        }
+        else if (_DeathCount == m_EnemyWave1.Length + m_EnemyWave2.Length + m_EnemyBoss.Length) {
 			if (DeathHandle != null)
 				DeathHandle (3);
-		}
-	}
 
+            PlayerObject.DataReset();
+
+            print("DeathHandle 3");
+
+        }
+
+
+    }
 
 	public void Initailize ()
 	{
-		//PlayerObject.Initailize ();
+		PlayerObject.Initailize ();
 
 		foreach (var obj in EnemyObjectsPool) {
 			obj.Initailize ();
@@ -92,7 +106,9 @@ public class CharacterManager : MonoBehaviour
 
 	public void GameStartFight ()
 	{
-		m_GoFight.SetActive (true);
+        m_GoViveCameraPrefab.transform.position = m_TransViveSeeker.transform.position;
+
+        m_GoFight.SetActive (true);
 		MusicBeatManager.Instance.OnPlayBattleBoss ();
 	}
 }

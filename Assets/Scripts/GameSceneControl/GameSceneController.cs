@@ -20,6 +20,6 @@ public class GameSceneController : MonoBehaviour {
 
     public void EndOpening()
     {
-
+        CharacterManager.Instance.GameStartWave1();
     }
 }

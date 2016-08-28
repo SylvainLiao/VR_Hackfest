@@ -12,7 +12,8 @@ public class PlayerShield : IEquipment
     void Start()
     {
         MusicBeatManager.Instance.OnBeatNotify += ShieldTweenAlpha;
-        m_Render.GetComponent<Renderer>();
+
+        m_Render = this.GetComponent<Renderer>();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -46,7 +47,7 @@ public class PlayerShield : IEquipment
     private bool BlockDeter(Player player)
     {
         RaycastHit hitinfo;
-        if (!Physics.SphereCast(player.BodyTransform.position,0.3f, player.transform.forward, out hitinfo, float.MaxValue, 11))
+        if (!Physics.SphereCast(player.BodyTransform.position,0.5f, player.transform.forward, out hitinfo, float.MaxValue, 11))
             return false;
         /*
         if (!hitinfo.collider.gameObject.GetComponent<PlayerShield>())
@@ -58,14 +59,16 @@ public class PlayerShield : IEquipment
     private void ShieldTweenAlpha()
     {
         m_Render.sharedMaterial.SetFloat("_Rim", m_BeatCount * 0.7f);
+        float rim = m_Render.sharedMaterial.GetFloat("_Rim");
+        if (rim >= 1.8f)
+            m_Render.sharedMaterial.SetFloat("_Rim", 1.8f);
         m_BeatCount++;
+        /*
         if (m_BeatCount >= 3)
         {
-            Animator anim = this.gameObject.GetComponent<Animator>();
-            anim.Play("Ready");
             m_BeatCount = 0;
             IsCoolDown = true;
-        }
+        }*/
     }
 
     private void ResetTweenAlpha()

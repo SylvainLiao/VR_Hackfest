@@ -8,7 +8,7 @@ public class Enemy : ICharacter
 	public string EnemyDataIndex;
 
 	// Use this for initialization
-	public  void Initailize ()
+	public void Initailize ()
 	{
 		m_TableDataBase = DataEnter.Instance.GetTable<TableEnemyDataScriptable> ().GetData (EnemyDataIndex);
 		TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
@@ -67,5 +67,10 @@ public class Enemy : ICharacter
 		m_Animation.Death ();
 
 		m_SoundPlayer.PlayOneShot (DeadSound);
+
+        if (EnemyDataIndex == "King001")
+        {
+            VRApplication.Instance.Victory();
+        }
 	}
 }

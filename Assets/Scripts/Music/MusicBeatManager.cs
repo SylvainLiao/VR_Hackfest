@@ -61,7 +61,7 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 		m_BeatTime = 1.5f;
 		Play (m_AudioClipMain [0], 0.25f);
 		yield return new WaitForSeconds (3.075f);
-		Play (m_AudioClipMain [1], 0.25f);
+		Play (m_AudioClipMain [1], 0.05f);
 		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
 		InvokeRepeating ("OnBeatHalf", 0, m_BeatTime / 2);
 
@@ -77,7 +77,7 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 		m_BeatTime = 1;
 		Play (m_AudioClipMain [2], 0.25f);
 		yield return new WaitForSeconds (3.3f);
-		Play (m_AudioClipMain [3], 0.4f);
+		Play (m_AudioClipMain [3], 0.05f);
 		InvokeRepeating ("PlayOneShotBeat", 0, m_BeatTime);
 		InvokeRepeating ("OnBeatHalf", 0, m_BeatTime / 2);
 

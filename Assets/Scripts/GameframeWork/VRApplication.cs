@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class VRApplication: MonoBehaviour
 {
@@ -42,5 +43,22 @@ public class VRApplication: MonoBehaviour
     {
         if (GamePause)
             return;
+    }
+    //--------------------------------------------------------------------------------------
+    public void Victory()
+    {
+        UiCanvas.Victory.SetActive(true);
+    }
+    //--------------------------------------------------------------------------------------
+    public void GameOver()
+    {
+        UiCanvas.GameOver.SetActive(true);
+        UiCanvas.FadeInFadeOut.SetActive(true);
+        //Invoke("GameRestart", 0.5f);
+    }
+    //--------------------------------------------------------------------------------------
+    private void GameRestart()
+    {
+        SceneManager.LoadScene("Game");
     }
 }
