@@ -5,10 +5,21 @@ public class PlayerShield : IEquipment
 {
     public bool IsCoolDown = false;
 
+    private Renderer m_Render;
+
+    private float m_BeatCount = 0;
+
+    void Start()
+    {
+        MusicBeatManager.Instance.OnBeatNotify += ShieldTweenAlpha;
+        m_Render.GetComponent<Renderer>();
+    }
+
     public void OnTriggerEnter(Collider other)
     {
         if (IsCoolDown)
             return;
+
 
         if (other.tag == Enum_CharacterTag.Player.ToString())
             return;
@@ -25,10 +36,11 @@ public class PlayerShield : IEquipment
         }
         else
         {
-            StartCoroutine(BlockCD(player));
+           // StartCoroutine(BlockCD(player));
         }
 
         player.Block();
+        ResetTweenAlpha();
     }
 
     private bool BlockDeter(Player player)
@@ -42,6 +54,29 @@ public class PlayerShield : IEquipment
             */
         return true;
     }
+
+    private void ShieldTweenAlpha()
+    {
+        m_Render.sharedMaterial.SetFloat("_Rim", m_BeatCount * 0.7f);
+        m_BeatCount++;
+        if (m_BeatCount >= 3)
+        {
+            Animator anim = this.gameObject.GetComponent<Animator>();
+            anim.Play("Ready");
+            m_BeatCount = 0;
+            IsCoolDown = true;
+        }
+    }
+
+    private void ResetTweenAlpha()
+    {
+        this.gameObject.GetComponent<Animator>().Stop();
+        m_BeatCount = 0;
+        m_Render.sharedMaterial.SetFloat("_Rim",0f);
+        IsCoolDown = false;
+    }
+
+    /*
     private IEnumerator BlockCD(Player player)
     {
         IsCoolDown = true;
@@ -56,5 +91,5 @@ public class PlayerShield : IEquipment
         {
             //Shield Color
         }
-    }
+    }*/
 }
