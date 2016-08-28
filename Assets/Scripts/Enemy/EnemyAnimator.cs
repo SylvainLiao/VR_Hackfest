@@ -32,6 +32,7 @@ public class EnemyAnimator : MonoBehaviour
 
 	public AudioSource m_AudioSource;
 	public AudioClip[] m_AudioClipWeapon;
+	public AudioClip m_AudioClipDeath;
 
 	public bool _IsPathFind = false;
 	protected bool _IsMoveHorizontal = false;
@@ -151,6 +152,8 @@ public class EnemyAnimator : MonoBehaviour
 		_IsDeath = true;
 		SetStatus ((UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Die1 : AnimatorType.Die2);
 
+		CharacterManager.Instance.DeathCountCheck ();
+		m_AudioSource.PlayOneShot (m_AudioClipDeath, 0.2f);
 		Destroy (this.gameObject, 3);
 	}
 

@@ -3,65 +3,69 @@ using System.Collections;
 
 public class Enemy : ICharacter
 {
-    private EnemyAnimator m_Animation;
+	private EnemyAnimator m_Animation;
 
-    public string EnemyDataIndex;
+	public string EnemyDataIndex;
 
-    // Use this for initialization
-    void Start()
-    {
-        m_TableDataBase = DataEnter.Instance.GetTable<TableEnemyDataScriptable>().GetData(EnemyDataIndex);
-        TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
-        CurrentHP = enemyData.HP;
+	// Use this for initialization
+	public  void Initailize ()
+	{
+		m_TableDataBase = DataEnter.Instance.GetTable<TableEnemyDataScriptable> ().GetData (EnemyDataIndex);
+		TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
+		CurrentHP = enemyData.HP;
 
-        m_SoundPlayer = this.GetComponentInChildren<AudioSource>();
+		m_SoundPlayer = this.GetComponentInChildren<AudioSource> ();
 
-        m_Animation = this.GetComponent<EnemyAnimator>();
-    }
-    public TableEnemyData GetEnemyData()
-    {
-        return m_TableDataBase as TableEnemyData;
+		m_Animation = this.GetComponent<EnemyAnimator> ();
+	}
 
-    }
+	public TableEnemyData GetEnemyData ()
+	{
+		return m_TableDataBase as TableEnemyData;
 
-    public override void Block()
-    {
-        Debug.Log("Battle: " + this.name + " Block!");
-        m_SoundPlayer.PlayOneShot(BlockSound);
-    }
+	}
 
-    public override void Damaged(int atk, bool hitOnTempo)
-    {
-        if (!hitOnTempo)
-            return;
+	public override void Block ()
+	{
+		Debug.Log ("Battle: " + this.name + " Block!");
+		m_SoundPlayer.PlayOneShot (BlockSound);
+	}
 
-        TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
+	public override void Damaged (int atk, bool hitOnTempo)
+	{
+		if (!hitOnTempo)
+			return;
 
-        int dmg = atk - enemyData.Defence;
-        //CurrentHP -= hitOnTempo ? Mathf.RoundToInt(dmg * 1.5f) : dmg;
-        if(dmg <= 0) dmg = 0;
+		TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
 
-        CurrentHP -= dmg;
+		int dmg = atk - enemyData.Defence;
+		//CurrentHP -= hitOnTempo ? Mathf.RoundToInt(dmg * 1.5f) : dmg;
+		if (dmg <= 0)
+			dmg = 0;
 
-        m_SoundPlayer.PlayOneShot(HitSound);
+		CurrentHP -= dmg;
 
-        if (OnHpChange != null)
-            OnHpChange(CurrentHP);
+		m_SoundPlayer.PlayOneShot (HitSound);
 
-        if (CurrentHP <= 0)
-        {
-            Dead();
-        }
+		if (OnHpChange != null)
+			OnHpChange (CurrentHP);
 
-        Debug.Log("Battle: " + this.name + " Damaged! CurrentHP = " + CurrentHP);
-    }
+		if (CurrentHP <= 0) {
+			Dead ();
+		}
 
-    public override void Dead()
-    {
-        Debug.Log("Battle: "+this.name+" Dead!");
+		GameObject loadGo = Utility.AssetRelate.ResourcesLoadCheckNull<GameObject> ("Prefabs/FX_Hit");
+		Utility.GameObjectRelate.InstantiateGameObject (this.gameObject, loadGo);
 
-        m_Animation.Death();
+		Debug.Log ("Battle: " + this.name + " Damaged! CurrentHP = " + CurrentHP);
+	}
 
-        m_SoundPlayer.PlayOneShot(DeadSound);
-    }
+	public override void Dead ()
+	{
+		Debug.Log ("Battle: " + this.name + " Dead!");
+
+		m_Animation.Death ();
+
+		m_SoundPlayer.PlayOneShot (DeadSound);
+	}
 }
