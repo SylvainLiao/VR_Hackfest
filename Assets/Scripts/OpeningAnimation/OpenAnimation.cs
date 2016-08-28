@@ -65,6 +65,10 @@ LueText, LueAnimator, 1));
         openingAnimationActionList.Add(
 new OpeningAnimationAction("那就別怪我了!!",
 SaladinText, SaladinAnimator, 13));
+
+        openingAnimationActionList.Add(
+new OpeningAnimationAction("他們不放人耶! 乎系!",
+SaladinText, SaladinAnimator, 13));
         //set idle
         SaladinAnimator.SetAnimation(1);
         LueAnimator.SetAnimation(1);
@@ -80,7 +84,7 @@ SaladinText, SaladinAnimator, 13));
 
     public void TestAnimationEvemt(int index)
     {
-        if (index == 6)
+        if (index == 7)
         {
             //go to battle
         }
