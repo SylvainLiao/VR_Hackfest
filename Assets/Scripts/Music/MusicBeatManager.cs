@@ -16,13 +16,6 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 	public event OnBeatHandler OnBeatNotify;
 	public event OnBeatHandler OnBeatHalfNotify;
 
-	void Start ()
-	{
-		StartCoroutine (PlayBattleNormal ());
-		//StartCoroutine (PlayBattleBoss ());
-
-		//PlayOneShotBeat();
-	}
 
 	public void Play (AudioClip clip, float volume = 1)
 	{
@@ -45,8 +38,21 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 			OnBeatHalfNotify ();
 	}
 
+	public void OnPlayBattleNormal ()
+	{
+		StartCoroutine (PlayBattleNormal ());
+	}
+
+	public void OnPlayBattleBoss ()
+	{
+		StartCoroutine (PlayBattleBoss ());
+	}
+
 	IEnumerator PlayBattleNormal ()
 	{
+		CancelInvoke ("PlayOneShotBeat");
+		CancelInvoke ("OnBeatHalf");
+
 		m_BeatTime = 1.5f;
 		Play (m_AudioClipMain [0], 0.25f);
 		yield return new WaitForSeconds (3.075f);
@@ -57,6 +63,9 @@ public class MusicBeatManager : SingletonObject<MusicBeatManager>
 
 	IEnumerator PlayBattleBoss ()
 	{
+		CancelInvoke ("PlayOneShotBeat");
+		CancelInvoke ("OnBeatHalf");
+
 		m_BeatTime = 1;
 		Play (m_AudioClipMain [2], 0.25f);
 		yield return new WaitForSeconds (3.3f);

@@ -33,8 +33,7 @@ public class EnemyAnimator : MonoBehaviour
 	public AudioSource m_AudioSource;
 	public AudioClip[] m_AudioClipWeapon;
 
-
-
+	public bool _IsPathFind = false;
 	protected bool _IsMoveHorizontal = false;
 	bool _IsDeath = false;
 
@@ -60,13 +59,17 @@ public class EnemyAnimator : MonoBehaviour
 
 	void OnBeatNotify ()
 	{
+		if (_IsDeath || _IsPathFind)
+			return;
+		
+		
 		SetStatus (GetIndexStatus ());
 		_IsMoveHorizontal = true;
 	}
 
 	void Update ()
 	{
-		if (_IsDeath)
+		if (_IsDeath || _IsPathFind)
 			return;
 		
 
@@ -144,10 +147,7 @@ public class EnemyAnimator : MonoBehaviour
 	}
 
 	public void Death ()
-	{
-		if (MusicBeatManager.Instance != null)
-			MusicBeatManager.Instance.OnBeatNotify -= OnBeatNotify;
-
+	{		
 		_IsDeath = true;
 		SetStatus ((UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Die1 : AnimatorType.Die2);
 
@@ -157,5 +157,16 @@ public class EnemyAnimator : MonoBehaviour
 	public void PlayWeapon ()
 	{
 		m_AudioSource.PlayOneShot (m_AudioClipWeapon [UnityEngine.Random.Range (0, m_AudioClipWeapon.Length)], 0.2f);
+	}
+
+	public void PathFind ()
+	{
+		_IsPathFind = true;
+		SetStatus (AnimatorType.Move);
+	}
+
+	public void PathFindComplete ()
+	{
+		_IsPathFind = false;
 	}
 }
