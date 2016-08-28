@@ -12,6 +12,11 @@ public class CharacterManager : MonoBehaviour
 		}
 	}
 
+	public delegate void DeathNofity (int level);
+
+	public event DeathNofity DeathHandle;
+
+
 	public Player PlayerObject;
 
 	public List<Enemy> EnemyObjectsPool = new List<Enemy> ();
@@ -20,19 +25,44 @@ public class CharacterManager : MonoBehaviour
 	public GameObject m_GoWave2;
 	public GameObject m_GoFight;
 
+
+	public GameObject[] m_EnemyWave1;
+	public GameObject[] m_EnemyWave2;
+	public GameObject[] m_EnemyBoss;
+
+	int _DeathCount;
+
 	private void Start ()
 	{
-		//Initailize ();
+		Initailize ();
+		_DeathCount = 0;
 	}
-    /*
+
+	public void DeathCountCheck ()
+	{
+		_DeathCount++;
+
+		if (_DeathCount == m_EnemyWave1.Length) {
+			if (DeathHandle != null)
+				DeathHandle (1);
+		} else if (_DeathCount == m_EnemyWave1.Length + m_EnemyWave2.Length) {
+			if (DeathHandle != null)
+				DeathHandle (2);
+		} else if (_DeathCount == m_EnemyWave1.Length + m_EnemyWave2.Length + m_EnemyBoss.Length) {
+			if (DeathHandle != null)
+				DeathHandle (3);
+		}
+	}
+
+
 	public void Initailize ()
 	{
-		PlayerObject.Initailize ();
+		//PlayerObject.Initailize ();
 
 		foreach (var obj in EnemyObjectsPool) {
 			obj.Initailize ();
 		}
-	}*/
+	}
 
 	public Enemy GetEnmeyByName (string name)
 	{
