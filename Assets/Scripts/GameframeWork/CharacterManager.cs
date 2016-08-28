@@ -22,9 +22,9 @@ public class CharacterManager : MonoBehaviour
 
 	private void Start ()
 	{
-		Initailize ();
+		//Initailize ();
 	}
-
+    /*
 	public void Initailize ()
 	{
 		PlayerObject.Initailize ();
@@ -32,7 +32,7 @@ public class CharacterManager : MonoBehaviour
 		foreach (var obj in EnemyObjectsPool) {
 			obj.Initailize ();
 		}
-	}
+	}*/
 
 	public Enemy GetEnmeyByName (string name)
 	{

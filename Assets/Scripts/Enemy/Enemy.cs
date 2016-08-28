@@ -8,7 +8,7 @@ public class Enemy : ICharacter
     public string EnemyDataIndex;
 
     // Use this for initialization
-    public override void Initailize()
+    void Start()
     {
         m_TableDataBase = DataEnter.Instance.GetTable<TableEnemyDataScriptable>().GetData(EnemyDataIndex);
         TableEnemyData enemyData = m_TableDataBase as TableEnemyData;
