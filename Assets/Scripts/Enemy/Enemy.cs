@@ -39,6 +39,9 @@ public class Enemy : ICharacter
 
         int dmg = atk - enemyData.Defence;
         //CurrentHP -= hitOnTempo ? Mathf.RoundToInt(dmg * 1.5f) : dmg;
+        if(dmg <= 0) dmg = 0;
+
+        CurrentHP -= dmg;
 
         m_SoundPlayer.PlayOneShot(HitSound);
 
