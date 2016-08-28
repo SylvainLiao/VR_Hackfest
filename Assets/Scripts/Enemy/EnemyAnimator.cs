@@ -145,6 +145,9 @@ public class EnemyAnimator : MonoBehaviour
 
 	public void Death ()
 	{
+		if (MusicBeatManager.Instance != null)
+			MusicBeatManager.Instance.OnBeatNotify -= OnBeatNotify;
+
 		_IsDeath = true;
 		SetStatus ((UnityEngine.Random.Range (0, 2) == 0) ? AnimatorType.Die1 : AnimatorType.Die2);
 
