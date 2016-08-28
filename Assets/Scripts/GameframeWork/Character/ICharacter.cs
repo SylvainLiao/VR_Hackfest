@@ -25,9 +25,6 @@ public abstract class ICharacter : MonoBehaviour
 
     public delegate void OnHpChangeEvent(int currentHP);
     public OnHpChangeEvent OnHpChange;
-
-    // Use this for initialization
-    public abstract void Initailize();
  
     public abstract void Damaged(int atk, bool hitOnTempo);
     public abstract void Block();

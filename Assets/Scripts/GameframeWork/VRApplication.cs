@@ -12,6 +12,8 @@ public class VRApplication: MonoBehaviour
         }
     }
 
+    public UICanvas UiCanvas;
+
     private bool m_IsAllDataReady = false;
     [HideInInspector]
     public bool IsAllDataReady { get { return m_IsAllDataReady; } }
