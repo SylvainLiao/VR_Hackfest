@@ -65,6 +65,7 @@ public class Player : ICharacter
         TablePlayerData playerData = m_TableDataBase as TablePlayerData;
 
         int dmg = atk - playerData.Defence;
+        if (dmg <= 0) dmg = 0;
         CurrentHP -= dmg;
 
         m_SoundPlayer.PlayOneShot(HitSound);
@@ -77,7 +78,7 @@ public class Player : ICharacter
             Dead();
         }
 
-        Debug.Log("Battle: " + this.name + " Damaged! CurrentHP = " + CurrentHP);
+        //Debug.Log("Battle: " + this.name + " Damaged! CurrentHP = " + CurrentHP);
     }
 
     public override void Dead()
@@ -99,6 +100,13 @@ public class Player : ICharacter
         EnemyWeapon weapon = other.GetComponent<EnemyWeapon>();
         //TODO : Filter Weapon or Shield
         if (weapon == null)
+            return;
+
+        EnemyAnimator anim = weapon.CharacterData.gameObject.transform.GetComponent<EnemyAnimator>();
+        if (anim.m_AnimatorType != EnemyAnimator.AnimatorType.ATK1 &&
+            anim.m_AnimatorType != EnemyAnimator.AnimatorType.ATK2 &&
+            anim.m_AnimatorType != EnemyAnimator.AnimatorType.ATK3 &&
+            anim.m_AnimatorType != EnemyAnimator.AnimatorType.Dash)
             return;
 
         Enemy targetBattle = weapon.CharacterData as Enemy;

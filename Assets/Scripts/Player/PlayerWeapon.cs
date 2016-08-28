@@ -26,23 +26,23 @@ public class PlayerWeapon : IEquipment
         if (!IsAttacking)
             return;
 
-        if (other.tag == Enum_CharacterTag.Player.ToString())
+        if (other.tag != Enum_CharacterTag.Enemy.ToString())
             return;
 
         EnemyWeapon weapon = other.GetComponent<EnemyWeapon>();
         if (weapon != null)
             return;
 
+        Debug.Log(string.Format("other.name:{0}，HitOnTempo:{1}", other.name, HitOnTempo));
         Player player = CharacterData as Player;
         player.Attack(other.gameObject, HitOnTempo);
         HitOnTempo = false;
-
-        Debug.Log("-----HitOnTempo = "+ HitOnTempo+"------------");
     }
 
     private void StartCoroutineTempo()
     {
-        StartCoroutine(TempoDetermination());
+        StopCoroutine("TempoDetermination");
+        StartCoroutine("TempoDetermination");
     }
 
     private IEnumerator TempoDetermination()
